@@ -2,8 +2,11 @@
 <html>
 <head>
   <title>Todo List</title>
-  <link rel="stylesheet" href="../styles.css" type="text/css" media="screen" charset="utf-8">   
+  <!--<link rel="stylesheet" href="../styles.css" type="text/css" media="screen" charset="utf-8"> ---> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
 </head>
+
+
 <body>
   <div id="myDIV" class="header">
     <h2>My To Do List</h2>
