@@ -2,16 +2,13 @@
 <html>
 <head>
   <title>Todo List</title>
-  <!--<link rel="stylesheet" href="../styles.css" type="text/css" media="screen" charset="utf-8"> ---> 
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+  <link rel="stylesheet" href="/static/styles.css" type="text/css" media="screen" charset="utf-8">   
 </head>
-
-
 <body>
   <div id="myDIV" class="header">
     <h2>My To Do List</h2>
     <input type="text" id="myInput" placeholder="Title...">
-    <span onclick="newElement()" class="addBtn">Add</span>
+    <span onclick="newElement()" class="addBtn"></span>
   </div>
   <ul id="myUL">
     <li>Hit the gym</li>
@@ -21,6 +18,12 @@
     <li>Read a book</li>
     <li>Organize office</li>
   </ul>
+  <button onclick="calculateCarbonFootprint()" class="calculateBtn">Calculate Carbon Footprint</button>
 </body>
 <script src="../scripts.js"></script>
+<script>
+  function calculateCarbonFootprint() {
+    alert('Calculating Carbon Footprint...');
+  }
+</script>
 </html>
