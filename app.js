@@ -1,35 +1,61 @@
 // app.js
 
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import Activity from './Activity';
+
+Modal.setAppElement('#root'); // Set the root element for accessibility
 
 class TodoApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       todos: [],
-      newTodoName: '',
-      newTodoFrequency: '',
+      modalIsOpen: false,
+      newActivity: {
+        name: '',
+        start: '',
+        end: '',
+        mode: '',
+        frequency: '',
+      },
     };
   }
 
-  handleNameChange = (event) => {
-    this.setState({ newTodoName: event.target.value });
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
   };
 
-  handleFrequencyChange = (event) => {
-    this.setState({ newTodoFrequency: event.target.value });
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
+  handleInputChange = (event, field) => {
+    const { newActivity } = this.state;
+    this.setState({
+      newActivity: {
+        ...newActivity,
+        [field]: event.target.value,
+      },
+    });
   };
 
   addTodo = () => {
-    const { newTodoName, newTodoFrequency, todos } = this.state;
-    if (newTodoName.trim() !== '' && newTodoFrequency.trim() !== '') {
-      const newActivity = new Activity(newTodoName, '', '', '', newTodoFrequency);
+    const { todos, newActivity } = this.state;
+    const { name, start, end, mode, frequency } = newActivity;
+    if (name.trim() !== '' && frequency.trim() !== '') {
+      const newActivityInstance = new Activity(name, start, end, mode, frequency);
       this.setState({
-        todos: [...todos, newActivity],
-        newTodoName: '',
-        newTodoFrequency: '',
+        todos: [...todos, newActivityInstance],
+        modalIsOpen: false,
+        newActivity: {
+          name: '',
+          start: '',
+          end: '',
+          mode: '',
+          frequency: '',
+        },
       });
     }
   };
@@ -41,7 +67,7 @@ class TodoApp extends React.Component {
   };
 
   render() {
-    const { todos, newTodoName, newTodoFrequency } = this.state;
+    const { todos, modalIsOpen, newActivity } = this.state;
 
     return (
       <div className="todo-container">
@@ -50,24 +76,67 @@ class TodoApp extends React.Component {
           <div className="todo-item" key={index}>
             <span>Name: {activity.name}</span>
             <span>Frequency: {activity.frequency}</span>
-            <button onClick={() => this.removeTodo(index)}>Remove</button>
+            <button onClick={() => this.removeTodo(index)}>x</button>
           </div>
         ))}
-        <div>
-          <input
-            type="text"
-            value={newTodoName}
-            onChange={this.handleNameChange}
-            placeholder="Enter activity name"
-          />
-          <input
-            type="text"
-            value={newTodoFrequency}
-            onChange={this.handleFrequencyChange}
-            placeholder="Enter activity frequency"
-          />
-          <button onClick={this.addTodo}>Add</button>
-        </div>
+        <button onClick={this.openModal}>+</button>
+
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Add Todo Modal"
+        >
+          <h2>Add Todo</h2>
+          <form>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={newActivity.name}
+                onChange={(e) => this.handleInputChange(e, 'name')}
+              />
+            </label>
+            <label>
+              Mode:
+              <input
+                type="text"
+                value={newActivity.mode}
+                onChange={(e) => this.handleInputChange(e, 'mode')}
+              />
+            </label>
+            <label>
+              Start:
+              <input
+                type="text"
+                value={newActivity.start}
+                onChange={(e) => this.handleInputChange(e, 'start')}
+              />
+            </label>
+            <label>
+              End:
+              <input
+                type="text"
+                value={newActivity.end}
+                onChange={(e) => this.handleInputChange(e, 'end')}
+              />
+            </label>
+            <label>
+              Frequency:
+              <input
+                type="text"
+                value={newActivity.frequency}
+                onChange={(e) => this.handleInputChange(e, 'frequency')}
+              />
+            </label>
+            {/* Add similar fields for other attributes if needed */}
+            <button type="button" onClick={this.addTodo}>
+              Add
+            </button>
+            <button type="button" onClick={this.closeModal}>
+              Cancel
+            </button>
+          </form>
+        </Modal>
       </div>
     );
   }
