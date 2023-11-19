@@ -1,8 +1,12 @@
 import requests
 
 def coords_to_carbon(origin, destination, transportation_type, frequency):
-    api_key = 'AIzaSyCdx1udUFaXQ_DfGbKIM4j4YpEAO_IgEgk'
-    frequency = float(frequency)
+    api_key = 'AIzaSyCdx1udUFaXQ_DfGbKIM4j4YpEAO_IgEgk' # please don't steal
+    try:
+        frequency = float(frequency)
+    except Exception:
+        return 'Frequency must be an integer 1-7!'
+
     transit_modes = {'Gasoline SUV': 'driving',
                      'Hybrid SUV': 'driving',
                      'Electric SUV': 'driving',
@@ -18,7 +22,7 @@ def coords_to_carbon(origin, destination, transportation_type, frequency):
         return 'Invalid Vehicle Type'
 
     if transit_modes[transportation_type] == 'transit':
-        if transportation_type == 'T':
+        if transportation_type == 'T': # specify transit_mode=tram|subway for Google Routes API
             resp = requests.get(
                 f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=transit&transit_mode=tram|subway&key={api_key}').json()
         elif transportation_type == 'Bus':
@@ -45,7 +49,6 @@ def coords_to_carbon(origin, destination, transportation_type, frequency):
     elif distance.split()[1] == 'ft':
         miles = float(distance.split()[0]) / 0.000189394
 
-
     if transportation_type == 'Gasoline SUV':
         return miles * 404 * frequency
     elif transportation_type == 'Hybrid SUV':
@@ -69,6 +72,7 @@ def coords_to_carbon(origin, destination, transportation_type, frequency):
     else:
         return 0
 
+
 def compare_to_context(user_co2):
     description = [
         "bottles being recycled",
@@ -87,6 +91,7 @@ def compare_to_context(user_co2):
         string += str(i + 1) + f": {comparison:.2f} {description[i]}\n<br>"
     return string
 
+
 def calculate_results(inputs):
     results = {}
     for todo_item in inputs:
@@ -95,8 +100,7 @@ def calculate_results(inputs):
             return results[todo_item[0]], {}
 
     return_string = ''
-    #print(results)
-    weekly_total = sum(results.values())
+    weekly_total = round(sum(results.values()), 2)
 
     for key in results:
         return_string += f'{key} = {results[key]}g C02\n<br>'
