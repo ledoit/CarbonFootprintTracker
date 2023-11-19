@@ -100,6 +100,20 @@
             text-align: center;
             padding: 1em 0;
         }
+
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
@@ -110,7 +124,7 @@
         <p>Reduce Your Carbon Emissions</p>
     </header>
     <div id="todo-container">
-        <small><a href="/">Calculator</a> | <a href="/tips">Tips</a></small>
+        <small><a href="/" class="button">Calculator</a> | <a href="/tips" class="button">Tips</a></small>
         <h2>Carbon Footprint History</h2>
         <p id="response">History</p>
     </div>
