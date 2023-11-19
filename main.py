@@ -5,7 +5,6 @@ import datetime
 app = Flask(__name__, template_folder="templates")
 
 database = []
-history_db = []
 
 def store_data(filename, data):
     with open(filename, 'a') as file:
@@ -67,7 +66,6 @@ def generate():
         return 'Add some routes to continue!'
 
     data = carbon_data_generator.calculate_results(database)
-    #history_db.append(f"| {datetime.datetime.now().strftime('%y-%m-%d')} Carbon Used: {data[1]} |")
     store_data('data.txt', f"Date: {datetime.datetime.now().strftime('%m-%d-%y')} Carbon Used: {data[1]}<br>\n")
     return data[0]
 
