@@ -4,7 +4,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
-import Activity from './Activity';
+import {Activity} from './Activity';
+import res_to_string from './carbon.py';
 
 Modal.setAppElement('#root');
 
@@ -21,11 +22,10 @@ class TodoApp extends React.Component {
           mode: '',
           frequency: '',
         },
-        carbonResults: {
-          returnString: '',
-          detailedResults: {},
-        },
+        carbonResultsString: '',
       };
+      // Bind the calculateCarbon method to the current instance
+      this.calculateCarbon = this.calculateCarbon.bind(this);
     }
 
   openModal = () => {
@@ -71,22 +71,20 @@ class TodoApp extends React.Component {
     this.setState({ todos });
   };
 
-  calculateCarbon = async () => {
+  async calculateCarbon() {
     const { todos } = this.state;
 
     try {
-      const response = await axios.post('/calculate', todos);
-      const { returnString, detailedResults } = response.data;
-      this.setState({
-        carbonResults: {
-          returnString,
-          detailedResults,
-        },
-      });
+        const response = await axios.post('http://localhost:5000/calculate', { activities: todos });
+        const { results } = response.data;
+        this.setState({ carbonResults: res_to_string(results) });
     } catch (error) {
-      console.error('Error calculating carbon footprint:', error);
+        console.error('Error calculating carbon footprint:', error);
     }
-  };
+}
+
+
+  
 
   render() {
     const { todos, modalIsOpen, newActivity, carbonResults } = this.state;
@@ -161,10 +159,10 @@ class TodoApp extends React.Component {
         </Modal>
         <button onClick={this.calculateCarbon}>Calculate Results</button>
 
-        {carbonResults.returnString && (
+        {carbonResults && (
   <div className="carbon-results">
     <h3>Carbon Footprint Results</h3>
-    <pre>{carbonResults.returnString}</pre>
+    <pre>{carbonResults}</pre>
   </div>
 )}
 
