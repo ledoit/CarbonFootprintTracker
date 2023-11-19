@@ -28,7 +28,7 @@
           }
 
         header {
-            background-color: #00C70D;
+            background-color: #229113;
             color: #fff;
             text-align: center;
             padding: 1em 0;
@@ -44,7 +44,7 @@
         }
 
         h2 {
-            color: #00C70D;
+            color: #229113;
         }
 
         p {
@@ -69,6 +69,10 @@
             text-align: center;
         }
 
+        #plus-button {
+            margins: 5px;
+        }
+
         #task-list {
             list-style-type: none;
             padding: 0;
@@ -88,6 +92,10 @@
             align-items: center;
         }
 
+        #modalwrapper {
+            margin: 10px;
+        }
+
         /* Style for the modal */
         .modal {
             display: none;
@@ -100,6 +108,20 @@
             border: 1px solid #ccc;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 2; /* Increase the z-index to ensure it appears above the overlay */
+        }
+
+        button {
+            background-color: #229113;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button: hover {
+            background-color: #00C70D;
+            text-decoration: underline;
         }
 
         .overlay {
@@ -197,7 +219,7 @@
             <small><a href="/history">History</a> | <a href="/tips">Tips</a></small>
             <div id="todo-title">
                 <h2>Weekly Carbon Calculator</h2>
-                <button onclick="openModal()">+</button>
+                <button id="plus-button" onclick="openModal()">+</button>
             </div>
             <ul id="task-list"></ul>
             <button id="getresults" onclick="generate()">Calculate my Carbon Footprint!</button>
@@ -210,23 +232,25 @@
     </footer>
 
     <div id="add-task-modal" class="modal">
-        <input type="text" placeholder="Name" id="input1"><br>
-        <input type="text" placeholder="Origin" id="input2"><br>
-        <input type="text" placeholder="Destination" id="input3"><br>
-        <select id="input4">
-            <option value="Gasoline SUV">Gasoline SUV</option>
-            <option value="Hybrid SUV">Hybrid SUV</option>
-            <option value="Electric SUV">Electric SUV</option>
-            <option value="Gasoline Sedan">Gasoline Sedan</option>
-            <option value="Hybrid Sedan">Hybrid Sedan</option>
-            <option value="Electric Sedan">Electric Sedan</option>
-            <option value="Motorcycle">Motorcycle</option>
-            <option value="T">T</option>
-            <option value="Bus">Bus</option>
-            <option value="Public Transportation">Public Transportation</option>
-        </select><br>
-        <input type="text" placeholder="Weekly frequency" id="input5"><br>
-        <button onclick="addTask()">Add Route</button>
+        <div id="modalwrapper">
+            <input type="text" placeholder="Name" id="input1"><br>
+            <input type="text" placeholder="Origin" id="input2"><br>
+            <input type="text" placeholder="Destination" id="input3"><br>
+            <select id="input4">
+                <option value="Gasoline SUV">Gasoline SUV</option>
+                <option value="Hybrid SUV">Hybrid SUV</option>
+                <option value="Electric SUV">Electric SUV</option>
+                <option value="Gasoline Sedan">Gasoline Sedan</option>
+                <option value="Hybrid Sedan">Hybrid Sedan</option>
+                <option value="Electric Sedan">Electric Sedan</option>
+                <option value="Motorcycle">Motorcycle</option>
+                <option value="T">T</option>
+                <option value="Bus">Bus</option>
+                <option value="Public Transportation">Public Transportation</option>
+            </select><br>
+            <input type="text" placeholder="Weekly frequency" id="input5"><br>
+            <button onclick="addTask()">Add Route</button>
+        </div>
     </div>
     <div id="overlay" class="overlay" onclick="closeModal()"></div>
     <script>
