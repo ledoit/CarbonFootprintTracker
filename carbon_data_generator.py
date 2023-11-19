@@ -2,7 +2,7 @@ import requests
 
 
 def coords_to_carbon(origin, destination, transportation_type, frequency):
-    api_key = 'API KEY'
+    api_key = 'AIzaSyCdx1udUFaXQ_DfGbKIM4j4YpEAO_IgEgk'
     frequency = float(frequency)
     transit_modes = {'Gasoline SUV': 'driving',
                      'Hybrid SUV': 'driving',
@@ -31,7 +31,10 @@ def coords_to_carbon(origin, destination, transportation_type, frequency):
     else:
         resp = requests.get(f'https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode={transit_modes[transportation_type]}&key={api_key}').json()
 
-    if resp['geocoded_waypoints'][1]['geocoder_status'] != 'OK' or resp['status'] != 'OK':
+    print(resp)
+    if resp['status'] != 'OK':
+        return 'Error: ' + resp['status']
+    elif resp['geocoded_waypoints'][1]['geocoder_status'] != 'OK':
         return 'Error: ' + resp['status']
 
     try:
@@ -105,6 +108,4 @@ def calculate_results(inputs):
 
     return_string += comparisons
 
-    return return_string, results
-
-
+    return [return_string, weekly_total]
