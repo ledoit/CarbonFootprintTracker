@@ -7,7 +7,7 @@ database = []
 
 @app.route("/")
 def hello():
-    return render_template('index3.html')
+    return render_template('index.html')
 
 
 @app.route('/process', methods=['POST'])
