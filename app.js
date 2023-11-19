@@ -1,27 +1,32 @@
 // app.js
 
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
+import axios from 'axios';
 import Activity from './Activity';
 
-Modal.setAppElement('#root'); // Set the root element for accessibility
+Modal.setAppElement('#root');
 
 class TodoApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [],
-      modalIsOpen: false,
-      newActivity: {
-        name: '',
-        start: '',
-        end: '',
-        mode: '',
-        frequency: '',
-      },
-    };
-  }
+    constructor(props) {
+      super(props);
+      this.state = {
+        todos: [],
+        modalIsOpen: false,
+        newActivity: {
+          name: '',
+          start: '',
+          end: '',
+          mode: '',
+          frequency: '',
+        },
+        carbonResults: {
+          returnString: '',
+          detailedResults: {},
+        },
+      };
+    }
 
   openModal = () => {
     this.setState({ modalIsOpen: true });
@@ -66,8 +71,25 @@ class TodoApp extends React.Component {
     this.setState({ todos });
   };
 
+  calculateCarbon = async () => {
+    const { todos } = this.state;
+
+    try {
+      const response = await axios.post('/calculate', todos);
+      const { returnString, detailedResults } = response.data;
+      this.setState({
+        carbonResults: {
+          returnString,
+          detailedResults,
+        },
+      });
+    } catch (error) {
+      console.error('Error calculating carbon footprint:', error);
+    }
+  };
+
   render() {
-    const { todos, modalIsOpen, newActivity } = this.state;
+    const { todos, modalIsOpen, newActivity, carbonResults } = this.state;
 
     return (
       <div className="todo-container">
@@ -137,6 +159,15 @@ class TodoApp extends React.Component {
             </button>
           </form>
         </Modal>
+        <button onClick={this.calculateCarbon}>Calculate Results</button>
+
+        {carbonResults.returnString && (
+  <div className="carbon-results">
+    <h3>Carbon Footprint Results</h3>
+    <pre>{carbonResults.returnString}</pre>
+  </div>
+)}
+
       </div>
     );
   }
