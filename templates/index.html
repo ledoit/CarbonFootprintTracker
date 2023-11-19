@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -70,8 +69,9 @@
 
 <body>
     <div id="todo-container">
+        <small><a href="/history">History</a> | <a href="/tips">Tips</a></small>
         <h2>Weekly Carbon Calculator</h2>
-        <button onclick="openModal()">Add Task</button>
+        <button onclick="openModal()">Add Route</button>
         <ul id="task-list"></ul>
         <button onclick="generate()">Find Carbon Footprint</button>
         <br>
@@ -97,7 +97,7 @@
             <option value="Bus">Bus</option>
             <option value="Public Transportation">Public Transportation</option>
         <input type="text" placeholder="Frequency (times per week)" id="input5">
-        <button onclick="addTask()">Add Task</button>
+        <button onclick="addTask()">Add Route</button>
     </div>
 
     <div id="overlay" class="overlay" onclick="closeModal()"></div>
@@ -153,6 +153,7 @@
                 }
             });
         }
+
 
         function addTask() {
             const name = document.getElementById('input1').value;
